@@ -4808,7 +4808,9 @@ var ASM_CONSTS = {
           document.makeFullscreen(UTF8ToString(str));
       }
 
-  function _ShowOverlayInput(id, x, y, w, h, fontSize, text) {
+  function _ShowOverlayInput(id, x, y, w, h, fontSize, text, goNamePtr) {
+      var goName = UTF8ToString(goNamePtr);
+  
       var input = document.getElementById("unityOverlayInput");
       if (!input) {
         input = document.createElement("input");
@@ -4819,9 +4821,8 @@ var ASM_CONSTS = {
         input.style.border = "1px solid #ccc";
         input.style.outline = "none";
   
-        // On change, send value back to Unity
         input.addEventListener("input", function () {
-          SendMessage("WebGLInputManager", "OnInputChange", input.value);
+          SendMessage(goName, "OnInputChange", input.value);
         });
   
         document.body.appendChild(input);
@@ -17539,7 +17540,7 @@ var dynCall_jiiiii = Module["dynCall_jiiiii"] = createExportWrapper("dynCall_jii
 var dynCall_ddiii = Module["dynCall_ddiii"] = createExportWrapper("dynCall_ddiii");
 
 /** @type {function(...*):?} */
-var dynCall_viffffiii = Module["dynCall_viffffiii"] = createExportWrapper("dynCall_viffffiii");
+var dynCall_viffffiiii = Module["dynCall_viffffiiii"] = createExportWrapper("dynCall_viffffiiii");
 
 /** @type {function(...*):?} */
 var dynCall_viijji = Module["dynCall_viijji"] = createExportWrapper("dynCall_viijji");
@@ -17780,6 +17781,9 @@ var dynCall_ffffiiii = Module["dynCall_ffffiiii"] = createExportWrapper("dynCall
 
 /** @type {function(...*):?} */
 var dynCall_viffffii = Module["dynCall_viffffii"] = createExportWrapper("dynCall_viffffii");
+
+/** @type {function(...*):?} */
+var dynCall_viffffiii = Module["dynCall_viffffiii"] = createExportWrapper("dynCall_viffffiii");
 
 /** @type {function(...*):?} */
 var dynCall_viiffffiiiiii = Module["dynCall_viiffffiiiiii"] = createExportWrapper("dynCall_viiffffiiiiii");
