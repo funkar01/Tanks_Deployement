@@ -1994,13 +1994,13 @@ var tempI64;
 // === Body ===
 
 var ASM_CONSTS = {
-  5246176: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
- 5246237: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
- 5246301: function() {return Module.webglContextAttributes.powerPreference;},  
- 5246359: function() {Module['emscripten_get_now_backup'] = performance.now;},  
- 5246414: function($0) {performance.now = function() { return $0; };},  
- 5246462: function($0) {performance.now = function() { return $0; };},  
- 5246510: function() {performance.now = Module['emscripten_get_now_backup'];}
+  5246416: function() {return Module.webglContextAttributes.premultipliedAlpha;},  
+ 5246477: function() {return Module.webglContextAttributes.preserveDrawingBuffer;},  
+ 5246541: function() {return Module.webglContextAttributes.powerPreference;},  
+ 5246599: function() {Module['emscripten_get_now_backup'] = performance.now;},  
+ 5246654: function($0) {performance.now = function() { return $0; };},  
+ 5246702: function($0) {performance.now = function() { return $0; };},  
+ 5246750: function() {performance.now = Module['emscripten_get_now_backup'];}
 };
 
 
@@ -2169,6 +2169,13 @@ var ASM_CONSTS = {
       } else {
         HEAPF64[totalJSptr >> 3] = NaN;
         HEAPF64[usedJSptr >> 3] = NaN;
+      }
+    }
+
+  function _HideOverlayInput() {
+      var input = document.getElementById("unityOverlayInput");
+      if (input) {
+        input.style.display = "none";
       }
     }
 
@@ -4800,6 +4807,35 @@ var ASM_CONSTS = {
   function _MakeFullscreen(str) {
           document.makeFullscreen(UTF8ToString(str));
       }
+
+  function _ShowOverlayInput(id, x, y, w, h, fontSize, text) {
+      var input = document.getElementById("unityOverlayInput");
+      if (!input) {
+        input = document.createElement("input");
+        input.type = "text";
+        input.id = "unityOverlayInput";
+        input.style.position = "absolute";
+        input.style.zIndex = 1000;
+        input.style.border = "1px solid #ccc";
+        input.style.outline = "none";
+  
+        // On change, send value back to Unity
+        input.addEventListener("input", function () {
+          SendMessage("WebGLInputManager", "OnInputChange", input.value);
+        });
+  
+        document.body.appendChild(input);
+      }
+  
+      input.value = UTF8ToString(text);
+      input.style.left = x + "px";
+      input.style.top = y + "px";
+      input.style.width = w + "px";
+      input.style.height = h + "px";
+      input.style.fontSize = fontSize + "px";
+      input.style.display = "block";
+      input.focus();
+    }
 
   var webSocketInstances = [];
   function _SocketClose(socketInstance)
@@ -16518,6 +16554,7 @@ function checkIncomingModuleAPI() {
 var asmLibraryArg = {
   "ExitFullscreen": _ExitFullscreen,
   "GetJSMemoryInfo": _GetJSMemoryInfo,
+  "HideOverlayInput": _HideOverlayInput,
   "IsFullscreen": _IsFullscreen,
   "JS_Accelerometer_IsRunning": _JS_Accelerometer_IsRunning,
   "JS_Accelerometer_Start": _JS_Accelerometer_Start,
@@ -16607,6 +16644,7 @@ var asmLibraryArg = {
   "JS_WebRequest_SetRequestHeader": _JS_WebRequest_SetRequestHeader,
   "JS_WebRequest_SetTimeout": _JS_WebRequest_SetTimeout,
   "MakeFullscreen": _MakeFullscreen,
+  "ShowOverlayInput": _ShowOverlayInput,
   "SocketClose": _SocketClose,
   "SocketCreate": _SocketCreate,
   "SocketError": _SocketError,
@@ -17501,6 +17539,9 @@ var dynCall_jiiiii = Module["dynCall_jiiiii"] = createExportWrapper("dynCall_jii
 var dynCall_ddiii = Module["dynCall_ddiii"] = createExportWrapper("dynCall_ddiii");
 
 /** @type {function(...*):?} */
+var dynCall_viffffiii = Module["dynCall_viffffiii"] = createExportWrapper("dynCall_viffffiii");
+
+/** @type {function(...*):?} */
 var dynCall_viijji = Module["dynCall_viijji"] = createExportWrapper("dynCall_viijji");
 
 /** @type {function(...*):?} */
@@ -17739,9 +17780,6 @@ var dynCall_ffffiiii = Module["dynCall_ffffiiii"] = createExportWrapper("dynCall
 
 /** @type {function(...*):?} */
 var dynCall_viffffii = Module["dynCall_viffffii"] = createExportWrapper("dynCall_viffffii");
-
-/** @type {function(...*):?} */
-var dynCall_viffffiii = Module["dynCall_viffffiii"] = createExportWrapper("dynCall_viffffiii");
 
 /** @type {function(...*):?} */
 var dynCall_viiffffiiiiii = Module["dynCall_viiffffiiiiii"] = createExportWrapper("dynCall_viiffffiiiiii");
